@@ -13,3 +13,4 @@ Write-Host "    Teacher: teacher@sms.edu | Password: Password123!" -ForegroundCo
 Write-Host "    Student: alice@sms.edu   | Password: Password123!" -ForegroundColor White
 Write-Host "================================================================================" -ForegroundColor Green
 Write-Host ""
+

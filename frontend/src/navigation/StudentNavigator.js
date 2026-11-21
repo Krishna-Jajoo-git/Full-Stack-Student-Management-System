@@ -5,6 +5,7 @@ import { StudentDashboard } from '../screens/student/StudentDashboard';
 import { StudentLeaderboardScreen } from '../screens/student/StudentLeaderboardScreen';
 import { StudentProfileScreen } from '../screens/student/StudentProfileScreen';
 import { StudentPointsHistoryScreen } from '../screens/student/StudentPointsHistoryScreen';
+import { QuizSessionScreen } from '../screens/common/QuizSessionScreen';
 import { SettingsScreen } from '../screens/common/SettingsScreen';
 import { useTheme } from '../contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -56,6 +57,7 @@ export const StudentNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="StudentMain" component={StudentTabs} />
       <Stack.Screen name="PointsHistory" component={StudentPointsHistoryScreen} />
+      <Stack.Screen name="QuizSession" component={QuizSessionScreen} />
     </Stack.Navigator>
   );
 };

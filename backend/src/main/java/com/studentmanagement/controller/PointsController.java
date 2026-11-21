@@ -2,6 +2,7 @@ package com.studentmanagement.controller;
 
 import com.studentmanagement.dto.request.AdjustPointsRequest;
 import com.studentmanagement.dto.request.AwardPointsRequest;
+import com.studentmanagement.dto.request.QuizRewardRequest;
 import com.studentmanagement.dto.response.PointTransactionResponse;
 import com.studentmanagement.service.PointsService;
 import jakarta.validation.Valid;
@@ -34,6 +35,13 @@ public class PointsController {
     public ResponseEntity<PointTransactionResponse> adjustPoints(@Valid @RequestBody AdjustPointsRequest request) {
         PointTransactionResponse response = pointsService.adjustPoints(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/quiz-reward")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PointTransactionResponse> claimQuizReward(@Valid @RequestBody QuizRewardRequest request) {
+        PointTransactionResponse response = pointsService.claimQuizReward(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/history/{studentId}")

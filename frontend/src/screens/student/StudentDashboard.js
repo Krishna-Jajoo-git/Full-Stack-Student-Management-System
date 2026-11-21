@@ -138,6 +138,33 @@ export const StudentDashboard = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
+            {/* Quick Quiz Challenge Banner */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate('QuizSession')}
+              style={[styles.quizBanner, { backgroundColor: theme.card, borderColor: theme.primary, borderWidth: 1.5 }]}
+            >
+              <View style={[styles.quizIconCircle, { backgroundColor: theme.primaryLight }]}>
+                <Ionicons name="flash" size={26} color={theme.primary} />
+              </View>
+              <View style={styles.quizBannerText}>
+                <View style={styles.quizTagRow}>
+                  <Text style={[styles.quizLiveTag, { backgroundColor: theme.primary, color: '#FFFFFF' }]}>
+                    LIVE SESSION
+                  </Text>
+                  <Text style={[typography.caption, { color: theme.success, fontWeight: '700', marginLeft: 6 }]}>
+                    +100 BONUS PTS
+                  </Text>
+                </View>
+                <Text style={[typography.h3, { color: theme.text, marginTop: 2 }]}>
+                  Quick Quiz Challenge
+                </Text>
+                <Text style={[typography.bodySmall, { color: theme.textSecondary }]}>
+                  Answer 5 quick questions & boost your leaderboard rank!
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={22} color={theme.primary} />
+            </TouchableOpacity>
+
             {/* Recent Transactions Section */}
             <View style={styles.sectionHeader}>
               <Text style={[typography.h3, { color: theme.text }]}>Recent Points History</Text>
@@ -256,6 +283,41 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  quizBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 14,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  quizIconCircle: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+  },
+  quizBannerText: {
+    flex: 1,
+  },
+  quizTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quizLiveTag: {
+    fontSize: 10,
+    fontWeight: '800',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
   },
   sectionHeader: {
     flexDirection: 'row',

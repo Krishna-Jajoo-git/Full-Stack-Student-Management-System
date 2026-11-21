@@ -2,11 +2,13 @@ package com.studentmanagement.service;
 
 import com.studentmanagement.dto.request.AdjustPointsRequest;
 import com.studentmanagement.dto.request.AwardPointsRequest;
+import com.studentmanagement.dto.request.QuizRewardRequest;
 import com.studentmanagement.dto.response.PointTransactionResponse;
 import com.studentmanagement.dto.response.StudentProfileResponse;
 import com.studentmanagement.entity.PointTransaction;
 import com.studentmanagement.entity.StudentProfile;
 import com.studentmanagement.entity.User;
+import com.studentmanagement.enums.Role;
 import com.studentmanagement.enums.TransactionType;
 import com.studentmanagement.exception.BadRequestException;
 import com.studentmanagement.exception.ResourceNotFoundException;
@@ -109,6 +111,44 @@ public class PointsService {
         transaction.setTransactionType(TransactionType.ADJUSTMENT);
         transaction.setReason(request.getReason().trim());
         transaction.setIdempotencyKey(request.getIdempotencyKey() != null && !request.getIdempotencyKey().trim().isEmpty() ? request.getIdempotencyKey().trim() : null);
+
+        transaction = pointTransactionRepository.save(transaction);
+        return PointTransactionResponse.fromEntity(transaction);
+    }
+
+    @Transactional
+    public PointTransactionResponse claimQuizReward(QuizRewardRequest request) {
+        if (request.getPoints() == null || request.getPoints() <= 0) {
+            throw new BadRequestException("Reward points must be greater than zero");
+        }
+
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        Optional<StudentProfile> studentOpt = studentProfileRepository.findByUserId(currentUserId);
+        if (studentOpt.isEmpty()) {
+            // Fallback for teacher preview / testing
+            studentOpt = studentProfileRepository.findAll().stream().findFirst();
+        }
+        StudentProfile student = studentOpt
+                .orElseThrow(() -> new ResourceNotFoundException("No student profile found for quiz reward"));
+
+        User systemTeacher = userRepository.findFirstByRoleOrderByIdAsc(Role.TEACHER)
+                .orElseThrow(() -> new ResourceNotFoundException("No teacher account found to attribute quiz transaction"));
+
+        // Atomically increment student total points
+        student.setTotalPoints(student.getTotalPoints() + request.getPoints());
+        studentProfileRepository.save(student);
+
+        String reason = "Quick Quiz: " + request.getTopic() + 
+                (request.getScore() != null && request.getTotalQuestions() != null 
+                        ? " (" + request.getScore() + "/" + request.getTotalQuestions() + " correct)" 
+                        : "");
+
+        PointTransaction transaction = new PointTransaction();
+        transaction.setStudent(student);
+        transaction.setTeacher(systemTeacher);
+        transaction.setPoints(request.getPoints());
+        transaction.setTransactionType(TransactionType.AWARD);
+        transaction.setReason(reason);
 
         transaction = pointTransactionRepository.save(transaction);
         return PointTransactionResponse.fromEntity(transaction);

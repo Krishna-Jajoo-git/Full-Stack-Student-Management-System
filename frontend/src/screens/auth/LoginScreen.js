@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../contexts/ThemeContext';
 import { typography } from '../../theme/typography';
 import { Input } from '../../components/Input';
@@ -61,12 +62,18 @@ export const LoginScreen = ({ navigation }) => {
     dispatch(clearAuthError());
   };
 
+  const insets = useSafeAreaInsets();
+  const topPadding = Math.max(insets.top, Platform.OS === 'android' ? (StatusBar.currentHeight || 28) : 20) + 16;
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={[styles.scrollContainer, { paddingTop: topPadding }]}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.headerRow}>
           <View style={styles.brandContainer}>
             <View style={[styles.logoIcon, { backgroundColor: theme.primary }]}>

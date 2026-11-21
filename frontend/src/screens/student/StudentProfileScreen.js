@@ -117,6 +117,14 @@ export const StudentProfileScreen = ({ navigation }) => {
 
             <View style={styles.actionButtons}>
               <Button
+                title="⚡ Quick Quiz Challenge (+100 Pts)"
+                variant="primary"
+                icon={<Ionicons name="flash-outline" size={18} color="#FFFFFF" />}
+                onPress={() => navigation.navigate('QuizSession')}
+                style={styles.historyBtn}
+              />
+
+              <Button
                 title="View Points History"
                 variant="outline"
                 icon={<Ionicons name="time-outline" size={18} color={theme.primary} />}

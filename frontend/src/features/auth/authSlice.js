@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser, registerUser, restoreSession, logoutUser } from './authThunks';
+import { fetchMyProfile } from '../students/studentThunks';
 
 const initialState = {
   user: null,
@@ -98,6 +99,11 @@ export const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
+    });
+
+    // Profile Sync
+    builder.addCase(fetchMyProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
     });
   },
 });

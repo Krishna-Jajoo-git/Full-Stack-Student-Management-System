@@ -98,10 +98,10 @@ export const TeacherDashboard = ({ navigation }) => {
                 style={styles.actionBtn}
               />
               <Button
-                title="Leaderboard"
+                title="Conduct Quiz"
                 variant="outline"
-                icon={<Ionicons name="trophy-outline" size={18} color={theme.primary} />}
-                onPress={() => navigation.navigate('TeacherLeaderboardTab')}
+                icon={<Ionicons name="flash-outline" size={18} color={theme.primary} />}
+                onPress={() => navigation.navigate('QuizSession')}
                 style={styles.actionBtn}
               />
             </View>

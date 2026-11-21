@@ -14,3 +14,4 @@ echo     Teacher: teacher@sms.edu ^| Password: Password123!
 echo     Student: alice@sms.edu   ^| Password: Password123!
 echo ================================================================================
 echo.
+

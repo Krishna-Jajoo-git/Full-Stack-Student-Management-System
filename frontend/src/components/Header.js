@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../contexts/ThemeContext';
 import { typography } from '../theme/typography';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,19 +13,36 @@ export const Header = ({
   rightAction,
 }) => {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const statusBarHeight = Platform.OS === 'android' ? (StatusBar.currentHeight || 28) : 20;
+  const topPadding = Math.max(insets.top, statusBarHeight) + 12;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.card, borderBottomColor: theme.border }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.card,
+          borderBottomColor: theme.border,
+          paddingTop: topPadding,
+        },
+      ]}
+    >
       <View style={styles.leftContainer}>
         {showBack && (
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
             <Ionicons name="arrow-back" size={24} color={theme.text} />
           </TouchableOpacity>
         )}
-        <View>
-          <Text style={[typography.h2, { color: theme.text }]}>{title}</Text>
+        <View style={styles.titleWrapper}>
+          <Text style={[typography.h2, { color: theme.text }]} numberOfLines={1}>
+            {title}
+          </Text>
           {subtitle && (
-            <Text style={[typography.bodySmall, { color: theme.textSecondary }]}>{subtitle}</Text>
+            <Text style={[typography.bodySmall, { color: theme.textSecondary, marginTop: 2 }]} numberOfLines={1}>
+              {subtitle}
+            </Text>
           )}
         </View>
       </View>
@@ -36,7 +54,6 @@ export const Header = ({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingTop: 16,
     paddingBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -48,6 +65,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
+  titleWrapper: {
+    flex: 1,
+  },
   backButton: {
     marginRight: 12,
     padding: 4,
@@ -56,4 +76,5 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 });
+
 

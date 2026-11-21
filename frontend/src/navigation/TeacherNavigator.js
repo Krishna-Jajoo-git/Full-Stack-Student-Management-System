@@ -6,6 +6,7 @@ import { StudentManagementScreen } from '../screens/teacher/StudentManagementScr
 import { TeacherLeaderboardScreen } from '../screens/teacher/TeacherLeaderboardScreen';
 import { AwardPointsScreen } from '../screens/teacher/AwardPointsScreen';
 import { StudentDetailsScreen } from '../screens/teacher/StudentDetailsScreen';
+import { QuizSessionScreen } from '../screens/common/QuizSessionScreen';
 import { SettingsScreen } from '../screens/common/SettingsScreen';
 import { useTheme } from '../contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -58,6 +59,7 @@ export const TeacherNavigator = () => {
       <Stack.Screen name="TeacherMain" component={TeacherTabs} />
       <Stack.Screen name="AwardPoints" component={AwardPointsScreen} />
       <Stack.Screen name="StudentDetails" component={StudentDetailsScreen} />
+      <Stack.Screen name="QuizSession" component={QuizSessionScreen} />
     </Stack.Navigator>
   );
 };

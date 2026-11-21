@@ -41,13 +41,27 @@ docker compose up
 
 When running the native Android build on Android Studio's Emulator, the app connects to the running `sms_backend` container:
 
+### Quickest Way: Automatic 1-Click Script
+Run this single command from your project root:
+```powershell
+.\run-android.ps1
+```
+*(Or double-click `run-android.bat`. It will start the `Pixel_9a` emulator if not running, wait for it to boot, route the network bridge, install the APK, and open the app automatically!)*
+
+---
+
+### Manual Step-by-Step Way:
 ### 1. Start the Android Emulator
-* In Android Studio, launch your preferred virtual device (e.g. `Pixel_9a` with API 34).
-* Ensure it is detected:
-  ```powershell
-  adb devices
-  # Output: emulator-5554 device
-  ```
+Launch `Pixel_9a` directly from terminal:
+```powershell
+Start-Process "C:\Users\Krishna\AppData\Local\Android\Sdk\emulator\emulator.exe" -ArgumentList "-avd Pixel_9a"
+```
+Or click the **Device Manager** icon in Android Studio (top-right toolbar) and click the **Play (▶)** button.
+Ensure it is detected:
+```powershell
+adb devices
+# Output: emulator-5554 device
+```
 
 ### 2. Map Emulator Port to Backend Container
 Run the reverse port bridge so the Android emulator can reach the backend at `localhost:8081`:
@@ -55,15 +69,9 @@ Run the reverse port bridge so the Android emulator can reach the backend at `lo
 adb reverse tcp:8081 tcp:8081
 ```
 
-### 3. Build & Install the Native APK
+### 3. Install & Launch the App on the Emulator
 ```powershell
-cd frontend/android
-.\gradlew.bat :app:installDebug --project-cache-dir C:\Users\Krishna\AppData\Local\Temp\sms-gradle
-```
-
-### 4. Launch the App on the Emulator
-Click the **StudentManagement** icon on your emulator, or run:
-```powershell
+adb install -r frontend\android\app\build\outputs\apk\debug\app-debug.apk
 adb shell am start -n com.studentmanagement.app/.MainActivity
 ```
 

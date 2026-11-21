@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
@@ -23,20 +24,30 @@ export const RootNavigator = () => {
     dispatch(restoreSession());
   }, [dispatch]);
 
-  if (isRestoringSession) {
-    return <SplashScreen />;
-  }
-
   return (
-    <NavigationContainer>
-      {!isAuthenticated ? (
-        <AuthNavigator />
-      ) : userRole === ROLES.TEACHER ? (
-        <TeacherNavigator />
-      ) : (
-        <StudentNavigator />
+    <View style={styles.container}>
+      <NavigationContainer>
+        {!isAuthenticated ? (
+          <AuthNavigator />
+        ) : userRole === ROLES.TEACHER ? (
+          <TeacherNavigator />
+        ) : (
+          <StudentNavigator />
+        )}
+      </NavigationContainer>
+      {isRestoringSession && (
+        <View style={StyleSheet.absoluteFill}>
+          <SplashScreen />
+        </View>
       )}
-    </NavigationContainer>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
 
