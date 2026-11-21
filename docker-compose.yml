@@ -1,4 +1,7 @@
 services:
+  # ----------------------------------------------------------------------------
+  # 1. PostgreSQL Database Service
+  # ----------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     container_name: sms_postgres
@@ -17,8 +20,54 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    networks:
+      - sms_network
+
+  # ----------------------------------------------------------------------------
+  # 2. Spring Boot 3.3.5 Backend API Service
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sms_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-student_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-sms_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-sms_secure_password_2026}
+      SERVER_PORT: 8081
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      TEACHER_INVITE_CODE: ${TEACHER_INVITE_CODE:-TEACHER_SECURE_KEY_2026}
+    ports:
+      - "8081:8081"
+    networks:
+      - sms_network
+
+  # ----------------------------------------------------------------------------
+  # 3. React Native Web Client (Nginx)
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sms_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8082:80"
+    networks:
+      - sms_network
 
 volumes:
   postgres_sms_data:
     name: postgres_sms_data
 
+networks:
+  sms_network:
+    name: sms_network
+    driver: bridge
