@@ -4,25 +4,36 @@ This system is containerized with **Docker Compose**. With a single command, the
 
 ---
 
-## 🚀 Quickest Way to Run Everything (Single Docker Command)
+## 🚀 Quickest Way to Run Everything (Single Command with Terminal Links)
 
-Run this command in the project root:
+Run either of these commands in your project root:
 
 ```powershell
-docker compose up -d
+# Using the Windows batch runner (prints links directly):
+.\run.bat
+
+# Or using the PowerShell runner:
+.\start.ps1
+
+# Or standard Docker Compose:
+docker compose up
 ```
-*(If building after making code changes, use `docker compose up --build -d`)*
 
-### What Starts Automatically:
+### What Prints Automatically in Your Terminal:
 
-| Container | Image / Technology | Host Port | Description |
-| :--- | :--- | :---: | :--- |
-| **`sms_frontend`** | Nginx / React Native for Web | **`8082`** | Web client interface (`http://localhost:8082`) |
-| **`sms_backend`** | Eclipse Temurin 21 / Spring Boot 3.3.5 | **`8081`** | REST API engine (`http://localhost:8081/api/v1`) |
-| **`sms_postgres`** | PostgreSQL 16 (Alpine) | **`5434`** | Persistent relational database |
+```text
+================================================================================
+  🎓 STUDENT MANAGEMENT SYSTEM READY!
+================================================================================
+  👉 Web Application:     http://localhost:8082
+  👉 REST API Backend:    http://localhost:8081/api/v1
+  👉 Database (Postgres): localhost:5434
 
-Open your browser to:
-👉 **[http://localhost:8082](http://localhost:8082)**
+  Demo Accounts:
+    Teacher: teacher@sms.edu | Password: Password123!
+    Student: alice@sms.edu   | Password: Password123!
+================================================================================
+```
 
 ---
 
