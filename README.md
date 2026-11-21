@@ -121,6 +121,8 @@ It implements role-based access control (RBAC) for **STUDENTS** and **TEACHERS**
 
 ## ⚙️ Quick Start Guide
 
+> 📖 **Full Multi-Platform Execution Guide**: See [**RUN_GUIDE.md**](./RUN_GUIDE.md) for step-by-step instructions on running the system on **Web**, **Android Studio (Emulator)**, and **Expo**.
+
 ### Step 1: Start PostgreSQL Database
 
 Run Docker Compose to launch the isolated PostgreSQL container:
